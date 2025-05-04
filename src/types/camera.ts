@@ -2,7 +2,7 @@ export type Camera = {
   id: string;
   frame: string;
   meta: {
-    timestamp: Date;
+    dateTime: number;
     status: "active" | "inactive" | "error";
     motionDetected: boolean;
     detectedObjects: string[];
@@ -14,6 +14,6 @@ export type StateCameras = {
 };
 
 export type CameraContextType = {
-  cameraData: StateCameras;
-  setCameraData: React.Dispatch<React.SetStateAction<StateCameras>>;
+  cameraList: Camera[];
+  updateCamera: (camera: Camera) => void;
 };

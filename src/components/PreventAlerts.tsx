@@ -1,13 +1,13 @@
 import { PiVideoCameraFill } from "react-icons/pi";
 import { useCameraContext } from "../context/CameraContext";
 
-const CameraStatus = () => {
+const PreventAlert = () => {
   const { cameraList } = useCameraContext();
   return (
-    <section className="w-full h-1/2 px-5 pt-4 pb-6 bg-blue-300 flex flex-col">
+    <section className="w-full h-1/2 px-5 pt-4 pb-6 bg-orange-300 flex flex-col">
       <div className="text-center border-b border-b-black mb-3 pb-2">
-        <h2 className="font-semibold text-xl">Cameras</h2>
-        <p>Camera status</p>
+        <h2 className="font-semibold text-xl">Prevent Alerts</h2>
+        <p>Alert status</p>
       </div>
 
       {cameraList && cameraList.length === 0 ? (
@@ -31,4 +31,4 @@ const CameraStatus = () => {
   );
 };
 
-export default CameraStatus;
+export default PreventAlert;
