@@ -1,14 +1,22 @@
+export enum ActivityStatus {
+  active = "active",
+  inactive = "inactive",
+  error = "error",
+}
+
 export type Activity = {
-  cameraId: string;
-  peopleCount: number;
+  camera_id: string;
+  timestamp: string;
+  location: string;
+  status: keyof typeof ActivityStatus;
+  person_count: number;
 };
 
 export type StateActivityLog = {
-  [cameraId: string]: Activity;
+  [camera_id: string]: Activity;
 };
 
 export type ActivityContextType = {
-  // activityLog: StateActivityLog;
   activityList: Activity[];
   updateActivity: (activity: Activity) => void;
 };

@@ -18,7 +18,7 @@ export const ActivityProvider = ({ children }: { children: ReactNode }) => {
   const updateActivity = (activity: Activity) => {
     setActivityLog((prev) => ({
       ...prev,
-      [activity.cameraId]: activity,
+      [activity.camera_id]: activity,
     }));
   };
 

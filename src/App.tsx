@@ -1,25 +1,24 @@
-import Activities from "./components/Activities";
-import Alerts from "./components/Alerts";
+import ActivitiesSection from "./components/ActivitiesSection";
+import AlertsSection from "./components/AlertsSection";
 import CameraPanel from "./components/CameraPanel";
-import CameraStatus from "./components/CameraStatus";
+import CameraSection from "./components/CameraSection";
 import Header from "./components/Header";
-import PreventAlert from "./components/PreventAlerts";
+import PreventAlertSection from "./components/PreventAlertSection";
 
 const App = () => {
   return (
-    <section className="w-full h-screen">
+    <section className="w-full h-screen flex flex-col">
       <Header />
 
       <div className="flex">
-        <div className="w-[10%] bg-yellow-300 border h-[calc(100vh-80px)]">
-          <CameraStatus />
-          <PreventAlert />
+        <div className="w-[10%] bg-yellow-300 h-[calc(100vh-80px)]">
+          <CameraSection />
+          <PreventAlertSection />
         </div>
         <CameraPanel />
         <div className="w-[16%] bg-green-300 h-[calc(100vh-80px)]">
-          <Alerts />
-          {/* <div className="w-full p-4 h-1/2 bg-orange-300"></div> */}
-          <Activities />
+          <AlertsSection />
+          <ActivitiesSection />
         </div>
       </div>
     </section>

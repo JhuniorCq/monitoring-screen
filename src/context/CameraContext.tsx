@@ -17,7 +17,7 @@ export const CameraProvider = ({ children }: { children: ReactNode }) => {
   const cameraList = useMemo(() => Object.values(cameraData), [cameraData]);
 
   const updateCamera = (camera: Camera) => {
-    setCameraData((prev) => ({ ...prev, [camera.id]: camera }));
+    setCameraData((prev) => ({ ...prev, [camera.camera_id]: camera }));
   };
 
   return (

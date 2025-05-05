@@ -1,94 +1,119 @@
 import { StateCameras } from "../types/camera";
 
 export const cameraDataMock: StateCameras = {
-  CAM1: {
-    id: "CAM1",
-    frame: "https://placekitten.com/400/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "active",
-      motionDetected: true,
-      detectedObjects: ["person", "car"],
-    },
+  cam_001: {
+    camera_id: "cam_001",
+    location: "Entrada principal",
+    status: "active",
+    stream: "https://placekitten.com/400/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 5,
+    detections: [
+      {
+        class: "persona",
+        confidence: 0.88,
+        box: { x1: 132, y1: 110, x2: 220, y2: 300 },
+      },
+      {
+        class: "objeto_sospechoso",
+        confidence: 0.76,
+        box: { x1: 320, y1: 150, x2: 400, y2: 250 },
+      },
+    ],
   },
-  CAM2: {
-    id: "CAM2",
-    frame: "https://placekitten.com/401/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "active",
-      motionDetected: false,
-      detectedObjects: [],
-    },
+  cam_002: {
+    camera_id: "cam_002",
+    location: "Pasillo norte",
+    status: "error",
+    stream: "https://placekitten.com/401/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 0,
+    detections: [],
   },
-  CAM3: {
-    id: "CAM3",
-    frame: "https://placekitten.com/402/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "inactive",
-      motionDetected: false,
-      detectedObjects: [],
-    },
+  cam_003: {
+    camera_id: "cam_003",
+    location: "Estacionamiento",
+    status: "inactive",
+    stream: "https://placekitten.com/402/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 2,
+    detections: [],
   },
-  CAM4: {
-    id: "CAM4",
-    frame: "https://placekitten.com/403/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "active",
-      motionDetected: true,
-      detectedObjects: ["bicycle"],
-    },
+  cam_004: {
+    camera_id: "cam_004",
+    location: "Escalera de emergencia",
+    status: "active",
+    stream: "https://placekitten.com/403/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 1,
+    detections: [
+      {
+        class: "persona",
+        confidence: 0.92,
+        box: { x1: 100, y1: 120, x2: 200, y2: 300 },
+      },
+    ],
   },
-  CAM5: {
-    id: "CAM5",
-    frame: "https://placekitten.com/404/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "error",
-      motionDetected: false,
-      detectedObjects: [],
-    },
+  cam_005: {
+    camera_id: "cam_005",
+    location: "Recepción",
+    status: "error",
+    stream: "https://placekitten.com/404/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 0,
+    detections: [],
   },
-  CAM6: {
-    id: "CAM6",
-    frame: "https://placekitten.com/405/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "active",
-      motionDetected: false,
-      detectedObjects: [],
-    },
+  cam_006: {
+    camera_id: "cam_006",
+    location: "Salón A",
+    status: "active",
+    stream: "https://placekitten.com/405/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 0,
+    detections: [],
   },
-  CAM7: {
-    id: "CAM7",
-    frame: "https://placekitten.com/406/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "active",
-      motionDetected: true,
-      detectedObjects: ["car"],
-    },
+  cam_007: {
+    camera_id: "cam_007",
+    location: "Pasillo sur",
+    status: "active",
+    stream: "https://placekitten.com/406/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 3,
+    detections: [
+      {
+        class: "persona",
+        confidence: 0.84,
+        box: { x1: 150, y1: 130, x2: 240, y2: 310 },
+      },
+      {
+        class: "carro",
+        confidence: 0.79,
+        box: { x1: 300, y1: 200, x2: 400, y2: 300 },
+      },
+    ],
   },
-  CAM8: {
-    id: "CAM8",
-    frame: "https://placekitten.com/407/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "inactive",
-      motionDetected: false,
-      detectedObjects: [],
-    },
+  cam_008: {
+    camera_id: "cam_008",
+    location: "Salón B",
+    status: "inactive",
+    stream: "https://placekitten.com/407/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 0,
+    detections: [],
   },
-  CAM9: {
-    id: "CAM9",
-    frame: "https://placekitten.com/408/225",
-    meta: {
-      dateTime: Date.now(),
-      status: "active",
-      motionDetected: false,
-      detectedObjects: ["person"],
-    },
+  cam_009: {
+    camera_id: "cam_009",
+    location: "Área de carga",
+    status: "error",
+    stream: "https://placekitten.com/408/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 7,
+    detections: [
+      {
+        class: "persona",
+        confidence: 0.9,
+        box: { x1: 120, y1: 100, x2: 210, y2: 290 },
+      },
+    ],
   },
 };

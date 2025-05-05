@@ -1,40 +1,67 @@
 import { type StateActivityLog } from "../types/activity";
 
 export const activityDataMock: StateActivityLog = {
-  CAM1: {
-    cameraId: "CAM1",
-    peopleCount: 5,
+  cam_001: {
+    camera_id: "cam_001",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Entrada principal",
+    status: "active",
+    person_count: 5,
   },
-  CAM2: {
-    cameraId: "CAM2",
-    peopleCount: 0,
+  cam_002: {
+    camera_id: "cam_002",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Pasillo norte",
+    status: "active",
+    person_count: 0,
   },
-  CAM3: {
-    cameraId: "CAM3",
-    peopleCount: 2,
+  cam_003: {
+    camera_id: "cam_003",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Estacionamiento",
+    status: "inactive",
+    person_count: 2,
   },
-  CAM4: {
-    cameraId: "CAM4",
-    peopleCount: 1,
+  cam_004: {
+    camera_id: "cam_004",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Escalera de emergencia",
+    status: "active",
+    person_count: 1,
   },
-  CAM5: {
-    cameraId: "CAM5",
-    peopleCount: 0,
+  cam_005: {
+    camera_id: "cam_005",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Recepción",
+    status: "active",
+    person_count: 0,
   },
-  CAM6: {
-    cameraId: "CAM6",
-    peopleCount: 0,
+  cam_006: {
+    camera_id: "cam_006",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Salón A",
+    status: "active",
+    person_count: 0,
   },
-  CAM7: {
-    cameraId: "CAM7",
-    peopleCount: 3,
+  cam_007: {
+    camera_id: "cam_007",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Pasillo sur",
+    status: "active",
+    person_count: 3,
   },
-  CAM8: {
-    cameraId: "CAM8",
-    peopleCount: 0,
+  cam_008: {
+    camera_id: "cam_008",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Salón B",
+    status: "inactive",
+    person_count: 0,
   },
-  CAM9: {
-    cameraId: "CAM9",
-    peopleCount: 7,
+  cam_009: {
+    camera_id: "cam_009",
+    timestamp: "2025-05-03T12:47:10Z",
+    location: "Área de carga",
+    status: "active",
+    person_count: 7,
   },
 };
