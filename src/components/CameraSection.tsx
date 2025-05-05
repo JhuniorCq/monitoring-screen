@@ -1,7 +1,7 @@
 import { PiVideoCameraFill } from "react-icons/pi";
 import { PiVideoCameraSlashFill } from "react-icons/pi";
 import { useCameraContext } from "../context/CameraContext";
-import { CameraStatus } from "../types/camera";
+import { type Camera, CameraStatus } from "../types/camera";
 
 // Configuración para íconos y clases
 const cameraConfig = {
@@ -19,7 +19,11 @@ const cameraConfig = {
   },
 };
 
-const CameraSection = () => {
+const CameraSection = ({
+  updateCamerasToDisplay,
+}: {
+  updateCamerasToDisplay: (camera: Camera) => void;
+}) => {
   const { cameraList } = useCameraContext();
 
   return (
@@ -46,6 +50,7 @@ const CameraSection = () => {
               <li
                 key={camera.camera_id}
                 className="flex justify-center items-center gap-4 cursor-pointer"
+                onClick={() => updateCamerasToDisplay(camera)}
               >
                 <Icon className={`text-2xl shrink-0 ${color}`} />
                 <span className={color}>{camera.camera_id}</span>

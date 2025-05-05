@@ -3,11 +3,20 @@ import { StateCameras } from "../types/camera";
 export const cameraDataMock: StateCameras = {
   cam_001: {
     camera_id: "cam_001",
+    location: "Pasillo norte",
+    status: "error",
+    stream: "https://placekitten.com/401/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 0,
+    detections: [],
+  },
+  cam_002: {
+    camera_id: "cam_002",
     location: "Entrada principal",
     status: "active",
     stream: "https://placekitten.com/400/225",
     timestamp: "2025-05-03T12:45:22Z",
-    person_count: 5,
+    person_count: 0,
     detections: [
       {
         class: "persona",
@@ -20,15 +29,6 @@ export const cameraDataMock: StateCameras = {
         box: { x1: 320, y1: 150, x2: 400, y2: 250 },
       },
     ],
-  },
-  cam_002: {
-    camera_id: "cam_002",
-    location: "Pasillo norte",
-    status: "error",
-    stream: "https://placekitten.com/401/225",
-    timestamp: "2025-05-03T12:45:22Z",
-    person_count: 0,
-    detections: [],
   },
   cam_003: {
     camera_id: "cam_003",
@@ -113,6 +113,45 @@ export const cameraDataMock: StateCameras = {
         class: "persona",
         confidence: 0.9,
         box: { x1: 120, y1: 100, x2: 210, y2: 290 },
+      },
+    ],
+  },
+  cam_010: {
+    camera_id: "cam_010",
+    location: "Laboratorio de informática",
+    status: "active",
+    stream: "https://placekitten.com/409/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 4,
+    detections: [
+      {
+        class: "persona",
+        confidence: 0.85,
+        box: { x1: 130, y1: 115, x2: 215, y2: 295 },
+      },
+    ],
+  },
+  cam_011: {
+    camera_id: "cam_011",
+    location: "Azotea",
+    status: "inactive",
+    stream: "https://placekitten.com/410/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 0,
+    detections: [],
+  },
+  cam_012: {
+    camera_id: "cam_012",
+    location: "Depósito",
+    status: "error",
+    stream: "https://placekitten.com/411/225",
+    timestamp: "2025-05-03T12:45:22Z",
+    person_count: 0,
+    detections: [
+      {
+        class: "objeto_sospechoso",
+        confidence: 0.81,
+        box: { x1: 300, y1: 180, x2: 390, y2: 270 },
       },
     ],
   },

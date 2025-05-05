@@ -1,24 +1,36 @@
-import { useCameraContext } from "../context/CameraContext";
+// import { useCameraContext } from "../context/CameraContext";
+import { MAX_NUMBER_CAMERAS } from "../utils/constants";
 import Camera from "./Camera";
+import { type Camera as CameraType } from "../types/camera";
 
-const CameraPanel = () => {
-  const { cameraList } = useCameraContext();
+const CameraPanel = ({
+  camerasToDisplay,
+}: {
+  camerasToDisplay: CameraType[];
+}) => {
+  // const { cameraList } = useCameraContext();
 
   return (
-    <section className="flex-1 p-4 overflow-y-auto bg-bg-dark border-l border-r">
-      {cameraList && cameraList.length === 0 ? (
+    <section className="h-[calc(100vh-80px)] flex-1 p-4 overflow-y-auto bg-bg-dark border-l border-r">
+      {camerasToDisplay && camerasToDisplay.length === 0 ? (
         <p>No hay cámaras disponibles</p>
       ) : (
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {cameraList.map((camera, i) => {
+          {camerasToDisplay.map((camera, i) => {
+            if (i + 1 > MAX_NUMBER_CAMERAS) return;
+
             if (camera.status !== "active")
               return (
-                <p className="flex justify-center items-center bg-bg-light text-text-secondary rounded-lg">
-                  "Cámara desconectada"
+                <p
+                  key={i}
+                  className="flex justify-center items-center bg-bg-light text-text-secondary rounded-lg"
+                >
+                  Cámara desconectada {camera.camera_id} | {camera.person_count}{" "}
+                  | {camera.status}
                 </p>
               );
 
-            return <Camera key={i} camera={camera} />;
+            return <Camera key={camera.camera_id} camera={camera} />;
           })}
         </ul>
       )}

@@ -11,9 +11,9 @@ const Camera = ({ camera }: { camera: Camera }) => {
         alt="Cámara"
         className="w-full h-full object-cover"
       />
-      {/* <div className="text-center text-white bg-black/60 py-1 absolute bottom-0 w-full">
-        Camera {camera.id}
-      </div> */}
+      <div className="text-center text-white bg-black/60 py-1 absolute bottom-0 w-full">
+        Camera {camera.camera_id} | {camera.person_count}
+      </div>
     </li>
   );
 };
