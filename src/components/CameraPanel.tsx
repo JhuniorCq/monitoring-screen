@@ -8,8 +8,6 @@ const CameraPanel = ({
 }: {
   camerasToDisplay: CameraType[];
 }) => {
-  // const { cameraList } = useCameraContext();
-
   return (
     <section className="h-[calc(100vh-80px)] flex-1 p-4 overflow-y-auto bg-bg-dark border-l border-r">
       {camerasToDisplay && camerasToDisplay.length === 0 ? (
