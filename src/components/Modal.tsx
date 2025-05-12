@@ -6,7 +6,7 @@ const Modal = ({ isOpen, close, children }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 cursor-pointer"
+      className="fixed px-8 inset-0 z-50 flex items-center justify-center bg-black/60 cursor-pointer"
       onClick={close}
     >
       <section

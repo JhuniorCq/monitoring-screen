@@ -35,7 +35,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("Se escribió: ", e.target.value);
-    // setSearchQuery(e.target.value);
+
     setFilters((prev) => ({ ...prev, query: e.target.value }));
   };
 
@@ -50,15 +50,32 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
     setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    alert("Actualizando datos.");
+  };
+
+  const removeFilters = () => {
+    setFilters({
+      [TypeOfFilters.query]: "",
+      [TypeOfFilters.type]: "",
+      [TypeOfFilters.year]: "",
+      [TypeOfFilters.month]: "",
+      [TypeOfFilters.location]: "",
+    });
+  };
+
   return (
     <Modal isOpen={isOpen} close={close}>
       <div className="flex flex-col gap-8">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 flex-wrap">
           {/* Búsqueda */}
           <form onSubmit={handleSearch} className="flex items-center gap-6">
             <input
               type="text"
               name={TypeOfFilters.query}
+              value={filters[TypeOfFilters.query]}
               placeholder="Event name"
               className="outline-0 border py-2 px-4 rounded"
               onChange={handleInputChange}
@@ -71,6 +88,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 id=""
                 className="outline-0 cursor-pointer"
                 onChange={handleFilterChange}
+                value={filters[TypeOfFilters.type]}
               >
                 <option>Type</option>
                 <option value="Tipo 1">Tipo 1</option>
@@ -82,6 +100,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 id=""
                 className="outline-0 cursor-pointer"
                 onChange={handleFilterChange}
+                value={filters[TypeOfFilters.year]}
               >
                 <option value={0}>Year</option>
                 <option value="2023">2023</option>
@@ -93,6 +112,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 id=""
                 className="outline-0 cursor-pointer"
                 onChange={handleFilterChange}
+                value={filters[TypeOfFilters.month]}
               >
                 <option value={0}>Month</option>
                 <option value="Enero">Enero</option>
@@ -104,6 +124,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 id=""
                 className="outline-0 cursor-pointer"
                 onChange={handleFilterChange}
+                value={filters[TypeOfFilters.location]}
               >
                 <option value={0}>Location</option>
                 <option value="Ventanilla">Ventanilla</option>
@@ -117,7 +138,16 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
             </button>
           </form>
 
-          <form onSubmit={(e) => e.preventDefault()}>
+          <div>
+            <button
+              className="bg-interactive-blue text-white py-2 px-6 rounded shadow-md transition-colors duration-300 ease-in-out hover:bg-blue-600"
+              onClick={removeFilters}
+            >
+              Remove filters
+            </button>
+          </div>
+
+          <form onSubmit={handleUpdate}>
             <button className="bg-interactive-blue text-white py-2 px-6 rounded shadow-md transition-colors duration-300 ease-in-out hover:bg-blue-600">
               Update
             </button>
@@ -127,7 +157,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
         {/* Tabla */}
         <table className="w-full table-auto border-collapse border">
           <thead>
-            <tr>
+            <tr className="text-center">
               <th className="border px-4 py-2">ID</th>
               <th className="border px-4 py-2">Name</th>
               <th className="border px-4 py-2">Type</th>
@@ -137,7 +167,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr className="text-center">
               <td className="border px-4 py-2">1</td>
               <td className="border px-4 py-2">User logged in</td>
               <td className="border px-4 py-2">Caída</td>
@@ -145,7 +175,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
               <td className="border px-4 py-2">Parque El Olivar</td>
               <td className="border px-4 py-2">https://example.com/log1.txt</td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td className="border px-4 py-2">2</td>
               <td className="border px-4 py-2">User logged in</td>
               <td className="border px-4 py-2">Caída</td>
@@ -153,7 +183,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
               <td className="border px-4 py-2">Parque El Olivar</td>
               <td className="border px-4 py-2">https://example.com/log1.txt</td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td className="border px-4 py-2">3</td>
               <td className="border px-4 py-2">User logged in</td>
               <td className="border px-4 py-2">Caída</td>
@@ -161,7 +191,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
               <td className="border px-4 py-2">Parque El Olivar</td>
               <td className="border px-4 py-2">https://example.com/log1.txt</td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td className="border px-4 py-2">4</td>
               <td className="border px-4 py-2">User logged in</td>
               <td className="border px-4 py-2">Caída</td>
@@ -169,7 +199,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
               <td className="border px-4 py-2">Parque El Olivar</td>
               <td className="border px-4 py-2">https://example.com/log1.txt</td>
             </tr>
-            <tr>
+            <tr className="text-center">
               <td className="border px-4 py-2">5</td>
               <td className="border px-4 py-2">User logged in</td>
               <td className="border px-4 py-2">Caída</td>
