@@ -4,20 +4,23 @@ import {
   type CameraContextType,
   type StateCameras,
 } from "../types/camera";
-import { cameraDataMock } from "../mocks/cameraDataMocks";
 
 const CameraContext = createContext<CameraContextType | null>(null);
 
 export const CameraProvider = ({ children }: { children: ReactNode }) => {
   // El estado será un objeto de objetos
-  const [cameraData, setCameraData] = useState<StateCameras>(
-    cameraDataMock /*{}*/
-  );
+  const [cameraData, setCameraData] = useState<StateCameras>({});
 
   const cameraList = useMemo(() => Object.values(cameraData), [cameraData]);
 
   const updateCamera = (camera: Camera) => {
-    setCameraData((prev) => ({ ...prev, [camera.camera_id]: camera }));
+    setCameraData((prev) => {
+      const existing = prev[camera.camera_id];
+
+      if (existing && existing.stream === camera.stream) return prev;
+
+      return { ...prev, [camera.camera_id]: camera };
+    });
   };
 
   return (

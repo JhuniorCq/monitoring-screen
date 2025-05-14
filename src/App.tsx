@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ActivitiesSection from "./components/ActivitiesSection";
 import AlertsSection from "./components/AlertsSection";
 import CameraPanel from "./components/CameraPanel";
@@ -8,13 +8,14 @@ import PreventAlertSection from "./components/PreventAlertSection";
 import { useCameraContext } from "./context/CameraContext";
 import { type Camera } from "./types/camera";
 import { MAX_NUMBER_CAMERAS } from "./utils/constants";
+import useSocket from "./hooks/useSocket";
 
 const App = () => {
+  useSocket();
+
   const { cameraList } = useCameraContext();
 
-  const [camerasToDisplay, setCamerasToDisplay] = useState(() =>
-    cameraList.filter((_, i) => i + 1 <= MAX_NUMBER_CAMERAS)
-  );
+  const [camerasToDisplay, setCamerasToDisplay] = useState<Camera[]>([]);
 
   const updateCamerasToDisplay = (camera: Camera) => {
     setCamerasToDisplay((prev) => {
@@ -49,6 +50,11 @@ const App = () => {
       return updated;
     });
   };
+
+  useEffect(() => {
+    const cameras = cameraList.filter((_, i) => i + 1 <= MAX_NUMBER_CAMERAS);
+    setCamerasToDisplay(cameras);
+  }, [cameraList]);
 
   return (
     <section className="w-full h-screen flex flex-col overflow-hidden">
