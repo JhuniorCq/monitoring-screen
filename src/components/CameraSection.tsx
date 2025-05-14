@@ -33,7 +33,7 @@ const CameraSection = ({
         <p className="text-text-secondary">Camera status</p>
       </div>
 
-      {cameraList && cameraList.length === 0 ? (
+      {cameraList.length === 0 ? (
         <p className="px-4 py-6 text-center flex justify-center items-center grow text-white">
           No hay cámaras disponibles
         </p>
