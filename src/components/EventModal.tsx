@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { type EventModalProps } from "../types/modal";
 import Modal from "./Modal";
+import CustomSelect from "./CustomSelect";
+import { OptionType } from "../types/select";
+import { SingleValue } from "react-select";
 
 enum TypeOfFilters {
   query = "query",
@@ -31,6 +34,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
 
     console.log("Los filtros son: ", filters); // Una cadena vacía no se envía al servidor
     console.log("Parámetro de Consulta formado: ", params.toString());
+    console.log(`URL: http://localhost:8000?${params.toString()}`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,8 +50,21 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
       "Con la opción: ",
       e.target.value
     );
-    // Si
+
     setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleFilterChangeTest = ({
+    name,
+    value,
+  }: {
+    name: keyof typeof TypeOfFilters;
+    value: string;
+  }) => {
+    console.log("El name de la opción seleccioanda es: ", name);
+    console.log("Opción seleccionada:", value);
+
+    // setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,6 +100,23 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
 
             {/* Filtros */}
             <div className="flex items-center gap-10">
+              <CustomSelect
+                name={TypeOfFilters.type}
+                options={[
+                  { value: "", label: "Type" },
+                  { value: "Tipo 1", label: "Tipo 1" },
+                  { value: "Tipo 2", label: "Tipo 2" },
+                  { value: "Tipo 3", label: "Tipo 3" },
+                ]}
+                defaultValue={{ value: "", label: "Type" }}
+                placeholder="Type"
+                onChange={(selected) =>
+                  handleFilterChangeTest({
+                    name: TypeOfFilters.type,
+                    value: selected?.value as string,
+                  })
+                }
+              />
               <select
                 name={TypeOfFilters.type}
                 id=""
@@ -90,7 +124,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 onChange={handleFilterChange}
                 value={filters[TypeOfFilters.type]}
               >
-                <option>Type</option>
+                <option value="">Type</option>
                 <option value="Tipo 1">Tipo 1</option>
                 <option value="Tipo 2">Tipo 2</option>
                 <option value="Tipo 3">Tipo 3</option>
@@ -102,7 +136,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 onChange={handleFilterChange}
                 value={filters[TypeOfFilters.year]}
               >
-                <option value={0}>Year</option>
+                <option value="">Year</option>
                 <option value="2023">2023</option>
                 <option value="2024">2024</option>
                 <option value="2025">2025</option>
@@ -114,7 +148,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 onChange={handleFilterChange}
                 value={filters[TypeOfFilters.month]}
               >
-                <option value={0}>Month</option>
+                <option value="">Month</option>
                 <option value="Enero">Enero</option>
                 <option value="Febrero">Febrero</option>
                 <option value="Marzo">Marzo</option>
@@ -126,7 +160,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                 onChange={handleFilterChange}
                 value={filters[TypeOfFilters.location]}
               >
-                <option value={0}>Location</option>
+                <option value="">Location</option>
                 <option value="Ventanilla">Ventanilla</option>
                 <option value="Santa Anita">Santa Anita</option>
                 <option value="San Miguel">San Miguel</option>
@@ -152,6 +186,12 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
               Update
             </button>
           </form>
+
+          <div>
+            <button className="bg-interactive-blue text-white py-2 px-6 rounded shadow-md transition-colors duration-300 ease-in-out hover:bg-blue-600">
+              Download
+            </button>
+          </div>
         </div>
 
         {/* Tabla */}

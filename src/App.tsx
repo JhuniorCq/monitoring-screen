@@ -11,7 +11,7 @@ import { MAX_NUMBER_CAMERAS } from "./utils/constants";
 import useSocket from "./hooks/useSocket";
 
 const App = () => {
-  useSocket();
+  // useSocket();
 
   const { cameraList } = useCameraContext();
 
