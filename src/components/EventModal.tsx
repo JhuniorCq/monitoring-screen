@@ -13,14 +13,13 @@ enum TypeOfFilters {
   location = "location",
 }
 
-// TODO: Agregar un botón de quitar filtros
 const EventModal = ({ isOpen, close }: EventModalProps) => {
   const [filters, setFilters] = useState({
     [TypeOfFilters.query]: "",
-    [TypeOfFilters.type]: "",
-    [TypeOfFilters.year]: "",
-    [TypeOfFilters.month]: "",
-    [TypeOfFilters.location]: "",
+    [TypeOfFilters.type]: { value: "", label: "Type" },
+    [TypeOfFilters.year]: { value: "", label: "Year" },
+    [TypeOfFilters.month]: { value: "", label: "Month" },
+    [TypeOfFilters.location]: { value: "", label: "Location" },
   });
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,42 +28,38 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
     const params = new URLSearchParams();
 
     Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.append(key, value);
+      if (typeof value === "string" && value) {
+        params.append(key, value);
+      } else if (typeof value === "object" && value.value) {
+        params.append(key, value.value);
+      }
     });
 
     console.log("Los filtros son: ", filters); // Una cadena vacía no se envía al servidor
     console.log("Parámetro de Consulta formado: ", params.toString());
     console.log(`URL: http://localhost:8000?${params.toString()}`);
+    alert(
+      `Enviando la solicitud a: http://localhost:8000?${params.toString()}`
+    );
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("Se escribió: ", e.target.value);
 
-    setFilters((prev) => ({ ...prev, query: e.target.value }));
+    setFilters((prev) => ({ ...prev, [TypeOfFilters.query]: e.target.value }));
   };
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log(
-      "Se ha seleccionado el filtro: ",
-      e.target.name,
-      "Con la opción: ",
-      e.target.value
-    );
-
-    setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleFilterChangeTest = ({
+  const handleFilterChange = ({
     name,
-    value,
+    selectedOption,
   }: {
     name: keyof typeof TypeOfFilters;
-    value: string;
+    selectedOption: SingleValue<OptionType>;
   }) => {
     console.log("El name de la opción seleccioanda es: ", name);
-    console.log("Opción seleccionada:", value);
+    console.log("Opción seleccionada:", selectedOption);
 
-    // setFilters((prev) => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: { ...selectedOption } }));
   };
 
   const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
@@ -76,10 +71,10 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
   const removeFilters = () => {
     setFilters({
       [TypeOfFilters.query]: "",
-      [TypeOfFilters.type]: "",
-      [TypeOfFilters.year]: "",
-      [TypeOfFilters.month]: "",
-      [TypeOfFilters.location]: "",
+      [TypeOfFilters.type]: { value: "", label: "Type" },
+      [TypeOfFilters.year]: { value: "", label: "Year" },
+      [TypeOfFilters.month]: { value: "", label: "Month" },
+      [TypeOfFilters.location]: { value: "", label: "Location" },
     });
   };
 
@@ -99,7 +94,7 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
             />
 
             {/* Filtros */}
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-6">
               <CustomSelect
                 name={TypeOfFilters.type}
                 options={[
@@ -108,63 +103,62 @@ const EventModal = ({ isOpen, close }: EventModalProps) => {
                   { value: "Tipo 2", label: "Tipo 2" },
                   { value: "Tipo 3", label: "Tipo 3" },
                 ]}
-                defaultValue={{ value: "", label: "Type" }}
-                placeholder="Type"
+                value={filters[TypeOfFilters.type]}
                 onChange={(selected) =>
-                  handleFilterChangeTest({
+                  handleFilterChange({
                     name: TypeOfFilters.type,
-                    value: selected?.value as string,
+                    selectedOption: selected,
                   })
                 }
               />
-              <select
-                name={TypeOfFilters.type}
-                id=""
-                className="outline-0 cursor-pointer"
-                onChange={handleFilterChange}
-                value={filters[TypeOfFilters.type]}
-              >
-                <option value="">Type</option>
-                <option value="Tipo 1">Tipo 1</option>
-                <option value="Tipo 2">Tipo 2</option>
-                <option value="Tipo 3">Tipo 3</option>
-              </select>
-              <select
+              <CustomSelect
                 name={TypeOfFilters.year}
-                id=""
-                className="outline-0 cursor-pointer"
-                onChange={handleFilterChange}
+                options={[
+                  { value: "", label: "Year" },
+                  { value: "2023", label: "2023" },
+                  { value: "2024", label: "2024" },
+                  { value: "2025", label: "2025" },
+                ]}
                 value={filters[TypeOfFilters.year]}
-              >
-                <option value="">Year</option>
-                <option value="2023">2023</option>
-                <option value="2024">2024</option>
-                <option value="2025">2025</option>
-              </select>
-              <select
+                onChange={(selected) =>
+                  handleFilterChange({
+                    name: TypeOfFilters.year,
+                    selectedOption: selected,
+                  })
+                }
+              />
+              <CustomSelect
                 name={TypeOfFilters.month}
-                id=""
-                className="outline-0 cursor-pointer"
-                onChange={handleFilterChange}
+                options={[
+                  { value: "", label: "Month" },
+                  { value: "Enero", label: "Enero" },
+                  { value: "Febrero", label: "Febrero" },
+                  { value: "Marzo", label: "Marzo" },
+                ]}
                 value={filters[TypeOfFilters.month]}
-              >
-                <option value="">Month</option>
-                <option value="Enero">Enero</option>
-                <option value="Febrero">Febrero</option>
-                <option value="Marzo">Marzo</option>
-              </select>
-              <select
+                onChange={(selected) =>
+                  handleFilterChange({
+                    name: TypeOfFilters.month,
+                    selectedOption: selected,
+                  })
+                }
+              />
+              <CustomSelect
                 name={TypeOfFilters.location}
-                id=""
-                className="outline-0 cursor-pointer"
-                onChange={handleFilterChange}
+                options={[
+                  { value: "", label: "Location" },
+                  { value: "Ventanilla", label: "Ventanilla" },
+                  { value: "Santa Anita", label: "Santa Anita" },
+                  { value: "San Miguel", label: "San Miguel" },
+                ]}
                 value={filters[TypeOfFilters.location]}
-              >
-                <option value="">Location</option>
-                <option value="Ventanilla">Ventanilla</option>
-                <option value="Santa Anita">Santa Anita</option>
-                <option value="San Miguel">San Miguel</option>
-              </select>
+                onChange={(selected) =>
+                  handleFilterChange({
+                    name: TypeOfFilters.location,
+                    selectedOption: selected,
+                  })
+                }
+              />
             </div>
 
             <button className="bg-interactive-blue text-white py-2 px-6 rounded shadow-md transition-colors duration-300 ease-in-out hover:bg-blue-600">
