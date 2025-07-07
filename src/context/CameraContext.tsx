@@ -1,4 +1,4 @@
-//src\context\CameraContext.tsx
+// src/context/CameraContext.tsx
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import {
   Camera,
@@ -9,7 +9,6 @@ import {
 const CameraContext = createContext<CameraContextType | null>(null);
 
 export const CameraProvider = ({ children }: { children: ReactNode }) => {
-  // El estado será un objeto de objetos
   const [cameraData, setCameraData] = useState<StateCameras>({});
 
   const cameraList = useMemo(() => Object.values(cameraData), [cameraData]);
@@ -18,7 +17,14 @@ export const CameraProvider = ({ children }: { children: ReactNode }) => {
     setCameraData((prev) => {
       const existing = prev[camera.camera_id];
 
-      if (existing && existing.stream === camera.stream) return prev;
+      // Solo evita actualizar si los datos son exactamente iguales
+      if (
+        existing &&
+        JSON.stringify(existing.detections) === JSON.stringify(camera.detections) &&
+        existing.person_count === camera.person_count
+      ) {
+        return prev; // no actualiza si no hay cambios
+      }
 
       return { ...prev, [camera.camera_id]: camera };
     });
@@ -35,7 +41,7 @@ export const useCameraContext = () => {
   const context = useContext(CameraContext);
 
   if (!context) {
-    throw new Error("");
+    throw new Error("CameraContext no está disponible");
   }
 
   return context;

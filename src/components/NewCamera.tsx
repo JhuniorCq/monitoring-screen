@@ -1,3 +1,4 @@
+// File: src/components/NewCamera.tsx
 import { Camera } from "../types/camera";
 import CamOverlay from "./CamOverlay";
 
@@ -9,23 +10,22 @@ type NewCameraProps = {
 };
 
 const NewCamera = ({ name, cameraId, id, cameraList }: NewCameraProps) => {
+  // 🔁 Buscar la cámara correspondiente en el listado que viene del contexto/backend
+  const camera = cameraList.find((cam) => cam.camera_id === cameraId);
+
   return (
-    // <section className="w-[40%] h-80 bg-black relative">
     <section className="w-full bg-black aspect-video overflow-hidden shadow-md relative rounded-lg">
       <h2 className="text-white absolute top-2 left-4 z-10">{name}</h2>
       <video
-        id={id}
+        id={`${cameraId}-live`}
         autoPlay
         muted
         playsInline
         className="w-full h-full object-cover"
       />
-      {/* Buscar la cam1 en el contexto */}
       <CamOverlay
         cameraId={cameraId}
-        detections={
-          cameraList.find((cam) => cam.camera_id === "cam1")?.detections ?? []
-        }
+        detections={camera?.detections ?? []}
       />
     </section>
   );

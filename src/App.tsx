@@ -9,12 +9,12 @@ import PreventAlertSection from "./components/PreventAlertSection";
 import { useCameraContext } from "./context/CameraContext";
 import { type Camera } from "./types/camera";
 import { MAX_NUMBER_CAMERAS } from "./utils/constants";
-// import useSocket from "./hooks/useSocket";
+import useSocket from "./hooks/useSocket";
 import CameraStarter from "./components/CameraStarter";
 // import NewCamera from "./components/NewCamera";
 
 const App = () => {
-  // useSocket();
+  useSocket();
 
   const { cameraList } = useCameraContext();
 
