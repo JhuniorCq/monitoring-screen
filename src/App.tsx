@@ -18,7 +18,7 @@ const App = () => {
 
   const { cameraList } = useCameraContext();
 
-  const [camerasToDisplay, setCamerasToDisplay] = useState<Camera[]>([]);
+  const [/*camerasToDisplay*/ _, setCamerasToDisplay] = useState<Camera[]>([]);
 
   const updateCamerasToDisplay = (camera: Camera) => {
     setCamerasToDisplay((prev) => {
@@ -93,7 +93,8 @@ const App = () => {
           <CameraSection updateCamerasToDisplay={updateCamerasToDisplay} />
           <PreventAlertSection />
         </div>
-        <CameraPanel camerasToDisplay={camerasToDisplay} />
+        {/* Antes se pasaba a camerasToDisplay */}
+        <CameraPanel camerasToDisplay={cameraList} />
         <div className="w-[16%] bg-green-300 h-[calc(100vh-80px)]">
           <AlertsSection />
           <ActivitiesSection />
