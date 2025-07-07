@@ -11,18 +11,17 @@ const CameraStarter = () => {
         const liveVideo = document.getElementById(
           "cam1-live"
         ) as HTMLVideoElement | null;
-  
+
         if (liveVideo && videoRef1.current) {
           liveVideo.srcObject = videoRef1.current.srcObject;
         }
       });
     }
-  
+
     if (videoRef2.current) {
       startCameraStream("cam2", videoRef2.current);
     }
   }, []);
-  
 
   return (
     <>

@@ -12,7 +12,7 @@ const Camera = ({ camera }: { camera: Camera }) => {
     if (localVideo && videoRef.current) {
       videoRef.current.srcObject = localVideo.srcObject;
     } else {
-      console.warn(
+      console.error(
         `No se encontró un stream local para camera_id=${camera.camera_id}`
       );
     }

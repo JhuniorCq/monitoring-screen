@@ -1,7 +1,7 @@
-//src\components\CameraPanel.tsx
-import { MAX_NUMBER_CAMERAS } from "../utils/constants";
-import Camera from "./Camera";
+// import { MAX_NUMBER_CAMERAS } from "../utils/constants";
+// import Camera from "./Camera";
 import { type Camera as CameraType } from "../types/camera";
+import NewCamera from "./NewCamera";
 
 const CameraPanel = ({
   camerasToDisplay,
@@ -10,7 +10,17 @@ const CameraPanel = ({
 }) => {
   return (
     <section className="h-[calc(100vh-80px)] flex-1 p-4 overflow-y-auto bg-bg-dark border-l border-r">
-      {camerasToDisplay.length === 0 ? (
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <NewCamera
+          // cameraList={cameraList}
+          cameraList={camerasToDisplay}
+          id="cam1-live"
+          cameraId="cam1"
+          name="Cámara local directa (cam1)"
+        />
+      </ul>
+
+      {/* {camerasToDisplay.length === 0 ? (
         <p className="size-full text-white flex items-center justify-center">
           No hay cámaras disponibles
         </p>
@@ -34,7 +44,7 @@ const CameraPanel = ({
             return <Camera key={camera.camera_id} camera={camera} />;
           })}
         </ul>
-      )}
+      )} */}
     </section>
   );
 };

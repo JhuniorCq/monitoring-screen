@@ -5,12 +5,13 @@ import CameraPanel from "./components/CameraPanel";
 import CameraSection from "./components/CameraSection";
 import Header from "./components/Header";
 import PreventAlertSection from "./components/PreventAlertSection";
-import CamOverlay from "./components/CamOverlay";
+// import CamOverlay from "./components/CamOverlay";
 import { useCameraContext } from "./context/CameraContext";
 import { type Camera } from "./types/camera";
 import { MAX_NUMBER_CAMERAS } from "./utils/constants";
-import useSocket from "./hooks/useSocket";
+// import useSocket from "./hooks/useSocket";
 import CameraStarter from "./components/CameraStarter";
+// import NewCamera from "./components/NewCamera";
 
 const App = () => {
   // useSocket();
@@ -59,29 +60,34 @@ const App = () => {
   }, [cameraList]);
 
   return (
-      
-      <section className="w-full h-screen flex flex-col overflow-hidden">
-        <section className="w-full bg-black relative" style={{ height: "40rem" }}>
-          <h2 className="text-white absolute top-2 left-4 z-10">Cámara local directa (cam1)</h2>
-          <video
-            id="cam1-live"
-            autoPlay
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
-          {/* Buscar la cam1 en el contexto */}
-          <CamOverlay
-            cameraId="cam1"
-            detections={
-              cameraList.find((cam) => cam.camera_id === "cam1")?.detections ?? []
-            }
-          />
-        </section>
-
+    <section className="w-full h-screen flex flex-col overflow-hidden">
+      {/* <section className="w-1/2 h-[30rem] bg-black relative">
+        <h2 className="text-white absolute top-2 left-4 z-10">
+          Cámara local directa (cam1)
+        </h2>
+        <video
+          id="cam1-live"
+          autoPlay
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        />
+        <CamOverlay
+          cameraId="cam1"
+          detections={
+            cameraList.find((cam) => cam.camera_id === "cam1")?.detections ?? []
+          }
+        />
+      </section> */}
+      {/* NewCamera envuelve a lo de arriba */}
+      {/* <NewCamera
+        cameraList={cameraList}
+        id="cam1-live"
+        cameraId="cam1"
+        name="Cámara local directa (cam1)"
+      /> */}
       <CameraStarter /> {/* esto activa las cámaras */}
       <Header />
-
       <div className="flex overflow-hidden">
         <div className="w-[10%] bg-yellow-300 h-[calc(100vh-80px)]">
           <CameraSection updateCamerasToDisplay={updateCamerasToDisplay} />
