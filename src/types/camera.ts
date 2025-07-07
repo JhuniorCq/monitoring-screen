@@ -1,3 +1,4 @@
+//src\types\camera.ts
 export enum CameraStatus {
   active = "active",
   inactive = "inactive",

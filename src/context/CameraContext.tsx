@@ -1,3 +1,4 @@
+//src\context\CameraContext.tsx
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import {
   Camera,
