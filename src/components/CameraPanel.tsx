@@ -1,3 +1,4 @@
+//src\components\CameraPanel.tsx
 import { MAX_NUMBER_CAMERAS } from "../utils/constants";
 import Camera from "./Camera";
 import { type Camera as CameraType } from "../types/camera";
