@@ -1,4 +1,3 @@
-//src\types\camera.ts
 export enum CameraStatus {
   active = "active",
   inactive = "inactive",
@@ -31,4 +30,5 @@ export type StateCameras = {
 export type CameraContextType = {
   cameraList: Camera[];
   updateCamera: (camera: Camera) => void;
+  updateDetections: (camera_id: string, detections: Camera["detections"]) => void;
 };

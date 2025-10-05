@@ -8,7 +8,7 @@ export type Alert = {
   alert_id: string;
   camera_id: string;
   timestamp: string;
-  event_type: string; // "caída" | "intrusión" | "incendio"
+  event_type: string; // "caída" 
   location: string;
   risk_level: keyof typeof AlertLevels;
   response_status: "pendiente" | "en proceso" | "resuelto";
