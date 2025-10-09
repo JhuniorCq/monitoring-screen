@@ -1,58 +1,67 @@
-import { useEffect } from "react";
-import { Camera } from "../types/camera";
+// src/components/CamOverlay.tsx
+import { useEffect, useRef } from "react";
+import { Detection } from "../types/detection";
 
-type CamOverlayProps = {
+type Props = {
   cameraId: string;
-  detections?: Camera["detections"];
+  detections: Detection[];
 };
 
-const CamOverlay = ({ cameraId, detections = [] }: CamOverlayProps) => {
-  const videoId = `${cameraId}-live`;
-  const canvasId = `${cameraId}-canvas`;
+const CamOverlay = ({ cameraId, detections }: Props) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  // 📏 Ajustar tamaño del canvas al contenedor
   useEffect(() => {
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
-    const img = document.getElementById(videoId) as HTMLImageElement | null;
+    const videoContainer = document.getElementById(`${cameraId}-live`);
+    const canvas = canvasRef.current;
+    if (videoContainer && canvas) {
+      const resize = () => {
+        canvas.width = videoContainer.clientWidth;
+        canvas.height = videoContainer.clientHeight;
+      };
+      resize();
+      window.addEventListener("resize", resize);
+      return () => window.removeEventListener("resize", resize);
+    }
+  }, [cameraId]);
 
-    if (!canvas || !img) return;
+  // 🖍️ Dibujar detecciones
+  useEffect(() => {
+    if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const draw = () => {
-      const width = img.naturalWidth;
-      const height = img.naturalHeight;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if (width === 0 || height === 0) return;
+    if (detections.length > 0) {
+      console.log(`🎯 Dibujando ${detections.length} detecciones en ${cameraId}`);
+    }
 
-      canvas.width = width;
-      canvas.height = height;
+    detections.forEach((det, idx) => {
+      const { x, y, width, height, label, confidence } = det;
+      const color = `hsl(${(label.charCodeAt(0) * 37) % 360}, 90%, 55%)`;
 
-      ctx.clearRect(0, 0, width, height);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x, y, width, height);
 
-      // Dibujar detecciones
-      detections.forEach((det) => {
-        const { x1, y1, x2, y2 } = det.box;
-        const label = `${det.class} (${Math.round(det.confidence * 100)}%)`;
+      ctx.fillStyle = color;
+      ctx.font = "14px Arial";
+      ctx.fillText(`${label} ${(confidence * 100).toFixed(1)}%`, x + 4, y - 6);
 
-        ctx.strokeStyle = "#00FF00";
-        ctx.lineWidth = 2;
-        ctx.font = "16px Arial";
-        ctx.fillStyle = "#00FF00";
-
-        ctx.beginPath();
-        ctx.rect(x1, y1, x2 - x1, y2 - y1);
-        ctx.stroke();
-        ctx.fillText(label, x1 + 4, y1 - 6);
-      });
-    };
-
-    draw();
-  }, [cameraId, detections]);
+      console.log(
+        `📦 [${cameraId}] Box #${idx + 1}: ${label} (${(confidence * 100).toFixed(1)}%)`,
+        { x, y, width, height }
+      );
+    });
+  }, [detections, cameraId]);
 
   return (
     <canvas
-      id={canvasId}
-      className="absolute top-0 left-0 w-full h-full pointer-events-none z-10"
+      ref={canvasRef}
+      id={`${cameraId}-overlay`}
+      className="absolute top-0 left-0 w-full h-full pointer-events-none z-20"
     />
   );
 };

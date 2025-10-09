@@ -1,3 +1,5 @@
+// src/context/CameraContext.tsx
+// src/context/CameraContext.tsx
 import { createContext, ReactNode, useContext, useMemo, useState } from "react";
 import {
   Camera,
@@ -15,34 +17,57 @@ export const CameraProvider = ({ children }: { children: ReactNode }) => {
 
   // 🧩 Actualiza toda la cámara
   const updateCamera = (camera: Camera) => {
-    setCameraData((prev) => ({
-      ...prev,
-      [camera.camera_id]: camera,
-    }));
+    console.log(`📸 Actualizando cámara completa [${camera.camera_id}]`);
+    setCameraData((prev) => {
+      const updated = {
+        ...prev,
+        [camera.camera_id]: camera,
+      };
+      console.log("📸 Nuevo estado cameraData:", updated);
+      return updated;
+    });
   };
 
   // 🎯 Actualiza solo las detecciones y el conteo de personas
-  const updateDetections = (camera_id: string, detections: Camera["detections"]) => {
+  const updateDetections = (
+    camera_id: string,
+    detections: Camera["detections"]
+  ) => {
+    console.log(`🧠 Actualizando detecciones de [${camera_id}] con ${detections.length} objetos`);
+
     setCameraData((prev) => {
       const existing = prev[camera_id];
-      if (!existing) return prev;
 
-      // Evita actualizar si no hay cambios
-      if (JSON.stringify(existing.detections) === JSON.stringify(detections)) {
-        return prev;
+      // ⚡ Si la cámara no existe aún, la creamos por defecto
+      if (!existing) {
+        console.warn(`⚠️ No se encontró la cámara ${camera_id} en el estado. Creando entrada inicial...`);
+        const newCamera: Camera = {
+          camera_id,
+          name: camera_id,
+          detections: [...detections],
+          person_count: detections.length,
+          timestamp: new Date().toISOString(),
+        };
+        return { ...prev, [camera_id]: newCamera };
       }
 
-      return {
+      // ✅ Si existe, solo actualizamos detecciones
+      const updated = {
         ...prev,
         [camera_id]: {
           ...existing,
-          detections,
+          detections: [...detections],
           person_count: detections.length,
           timestamp: new Date().toISOString(),
         },
       };
+
+      console.log(`✅ Cámara [${camera_id}] actualizada`);
+      console.log("📦 Estado actualizado:", updated[camera_id]);
+      return updated;
     });
   };
+
 
   return (
     <CameraContext.Provider

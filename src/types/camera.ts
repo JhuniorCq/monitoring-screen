@@ -1,3 +1,4 @@
+// src/types/camera.ts
 export enum CameraStatus {
   active = "active",
   inactive = "inactive",
@@ -5,6 +6,8 @@ export enum CameraStatus {
 }
 
 export type Camera = {
+  stream_url: any;
+  name: any;
   camera_id: string;
   location: string;
   status: keyof typeof CameraStatus;

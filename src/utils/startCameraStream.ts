@@ -39,9 +39,9 @@ export const startCameraStream = async (
       return;
     }
 
-    // 🎥 Si no tiene stream_url → cámara local
+    // 🎥 Si no tiene stream_url → cámara local -> Ya no lo uso
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
+      video: false, 
       audio: false,
     });
 
