@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
 // Usa el mismo puerto del backend
-const SOCKET_URL = "http://localhost:8000";
+// const SOCKET_URL = "http://localhost:8000";
+const SOCKET_URL = "http://35.237.3.246:8000";
 
 type SocketContextType = {
   socket: Socket | null;

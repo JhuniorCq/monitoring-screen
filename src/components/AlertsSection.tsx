@@ -1,3 +1,4 @@
+// src/components/AlertsSection.tsx
 import { useAlertContext } from "../context/AlertContext";
 import AlertCard from "./AlertCard";
 

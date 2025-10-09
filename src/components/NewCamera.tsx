@@ -1,8 +1,10 @@
 // src/components/NewCamera.tsx
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useRef as useReactRef } from "react";
 import useSocket from "../hooks/useSocket";
 import CamOverlay from "./CamOverlay";
 import { Camera } from "../types/camera";
+import { useAlertContext } from "../context/AlertContext";
+import { AlertLevels, type Alert } from "../types/alert";
 
 type Props = {
   name: string;
@@ -11,23 +13,27 @@ type Props = {
   cameraList: Camera[];
 };
 
+const DUPLICATE_INTERVAL_MS = 10_000; // ⏱️ No generar alertas iguales dentro de 10s
+
 const NewCamera = ({ name, cameraId, streamUrl, cameraList }: Props) => {
-  const { sendFrameForAnalysis, registerCamera, socket, isConnected } = useSocket();
+  const { sendFrameForAnalysis, registerCamera, isConnected } = useSocket();
   const camera = cameraList.find((c) => c.camera_id === cameraId);
   const imgRef = useRef<HTMLImageElement>(null);
-
-  // 🧠 Estado local que forza actualización del overlay
   const [detections, setDetections] = useState<any[]>([]);
+  const { addAlert } = useAlertContext();
 
+  // 🧠 Memoria local para evitar duplicados
+  const lastAlertRef = useReactRef<{ event_type: string; timestamp: number } | null>(null);
+
+  // 📡 Registrar cámara al iniciar
   useEffect(() => {
     console.log(`📡 Registrando cámara: ${cameraId}`);
     registerCamera(cameraId);
   }, [cameraId]);
 
-  // 🔁 Mantener sincronizado con los datos globales
+  // 🔁 Sincronizar detecciones y generar alertas sin duplicados
   useEffect(() => {
-    if (camera?.detections) {
-      // 🔍 Convertimos al formato esperado por CamOverlay
+    if (camera?.detections && camera.detections.length > 0) {
       const converted = camera.detections.map((det: any) => {
         const { box, class: label, confidence } = det;
         const x = box?.x1 ?? 0;
@@ -39,8 +45,46 @@ const NewCamera = ({ name, cameraId, streamUrl, cameraList }: Props) => {
 
       setDetections(converted);
       console.log(`🎯 Enviando detecciones al CamOverlay (${cameraId}):`, converted);
+
+      // 🚨 Crear alerta (solo si no es duplicada)
+      const firstDet = converted[0];
+      const now = Date.now();
+
+      const lastAlert = lastAlertRef.current;
+      const sameType =
+        lastAlert &&
+        lastAlert.event_type === firstDet.label &&
+        now - lastAlert.timestamp < DUPLICATE_INTERVAL_MS;
+
+      if (sameType) {
+        console.log(
+          `⚠️ Alerta duplicada ignorada (${firstDet.label}) en ${cameraId} dentro de ${DUPLICATE_INTERVAL_MS /
+            1000}s`
+        );
+        return;
+      }
+
+      lastAlertRef.current = { event_type: firstDet.label, timestamp: now };
+
+      const alert: Alert = {
+        alert_id: `${cameraId}-${Date.now()}`,
+        camera_id: cameraId,
+        risk_level:
+          firstDet.confidence > 0.8
+            ? AlertLevels.alto
+            : firstDet.confidence > 0.5
+            ? AlertLevels.medio
+            : AlertLevels.bajo,
+        event_type: firstDet.label,
+        location: name,
+        timestamp: new Date().toLocaleString(),
+        response_status: "pendiente",
+      };
+
+      addAlert(alert);
+      console.log(`🚨 Nueva alerta generada para ${cameraId}:`, alert);
     }
-  }, [camera?.detections, cameraId]);
+  }, [camera?.detections, cameraId, name, addAlert]);
 
   // 🎥 Captura periódica de frames
   useEffect(() => {
@@ -93,8 +137,7 @@ const NewCamera = ({ name, cameraId, streamUrl, cameraList }: Props) => {
       console.log(`🧹 Deteniendo captura de ${cameraId}`);
       clearInterval(captureInterval);
     };
-  }, [cameraId, streamUrl, isConnected]); // 👈 añadimos isConnected aquí
-
+  }, [cameraId, streamUrl, isConnected]);
 
   return (
     <section className="w-full bg-black aspect-video overflow-hidden shadow-md relative rounded-lg">
@@ -130,4 +173,3 @@ const NewCamera = ({ name, cameraId, streamUrl, cameraList }: Props) => {
 };
 
 export default NewCamera;
-

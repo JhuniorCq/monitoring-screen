@@ -1,3 +1,4 @@
+// src/components/AlertCard.tsx
 import { PiVideoCameraFill } from "react-icons/pi";
 import { AlertLevels, type Alert } from "../types/alert";
 

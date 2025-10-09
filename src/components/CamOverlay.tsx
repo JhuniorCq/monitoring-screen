@@ -9,6 +9,7 @@ type Props = {
 
 const CamOverlay = ({ cameraId, detections }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // 📏 Ajustar tamaño del canvas al contenedor
   useEffect(() => {
@@ -36,25 +37,36 @@ const CamOverlay = ({ cameraId, detections }: Props) => {
 
     if (detections.length > 0) {
       console.log(`🎯 Dibujando ${detections.length} detecciones en ${cameraId}`);
+
+      detections.forEach((det, idx) => {
+        const { x, y, width, height, label, confidence } = det;
+        const color = `hsl(${(label.charCodeAt(0) * 37) % 360}, 90%, 55%)`;
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, width, height);
+
+        ctx.fillStyle = color;
+        ctx.font = "14px Arial";
+        ctx.fillText(`${label} ${(confidence * 100).toFixed(1)}%`, x + 4, y - 6);
+
+        console.log(
+          `📦 [${cameraId}] Box #${idx + 1}: ${label} (${(confidence * 100).toFixed(1)}%)`,
+          { x, y, width, height }
+        );
+      });
+
+      // Reinicia el temporizador cuando llegan nuevas detecciones
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        if (!canvasRef.current) return;
+        const ctx = canvasRef.current.getContext("2d");
+        if (ctx) {
+          ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+          console.log(`🧹 Limpiando overlay de ${cameraId} por inactividad (10s)`);
+        }
+      }, 10000); // 10 segundos
     }
-
-    detections.forEach((det, idx) => {
-      const { x, y, width, height, label, confidence } = det;
-      const color = `hsl(${(label.charCodeAt(0) * 37) % 360}, 90%, 55%)`;
-
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(x, y, width, height);
-
-      ctx.fillStyle = color;
-      ctx.font = "14px Arial";
-      ctx.fillText(`${label} ${(confidence * 100).toFixed(1)}%`, x + 4, y - 6);
-
-      console.log(
-        `📦 [${cameraId}] Box #${idx + 1}: ${label} (${(confidence * 100).toFixed(1)}%)`,
-        { x, y, width, height }
-      );
-    });
   }, [detections, cameraId]);
 
   return (
